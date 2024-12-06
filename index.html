@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
-    <title>Visor AR Controlado</title>
+    <title>Visor AR con Imágenes Alineadas</title>
     <style>
         /* Pantalla de inicio con la primera imagen */
         #startScreen {
@@ -76,7 +76,6 @@
             display: none;
             z-index: 9998;
         }
-
     </style>
 </head>
 <body>
@@ -109,16 +108,16 @@
         </a-assets>
 
         <!-- Colocar las imágenes en una línea horizontal -->
-        <a-image id="img1" src="#pdf1" position="-5 2 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img2" src="#pdf2" position="-3 2 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img3" src="#pdf3" position="-1 2 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img4" src="#pdf4" position="1 2 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img5" src="#pdf5" position="3 2 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img6" src="#pdf6" position="5 2 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img7" src="#pdf7" position="-5 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img8" src="#pdf8" position="-3 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img9" src="#pdf9" position="-1 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img10" src="#pdf10" position="1 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
+        <a-image id="img1" src="#pdf1" position="-5 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
+        <a-image id="img2" src="#pdf2" position="-3 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
+        <a-image id="img3" src="#pdf3" position="-1 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
+        <a-image id="img4" src="#pdf4" position="1 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
+        <a-image id="img5" src="#pdf5" position="3 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
+        <a-image id="img6" src="#pdf6" position="5 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
+        <a-image id="img7" src="#pdf7" position="7 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
+        <a-image id="img8" src="#pdf8" position="9 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
+        <a-image id="img9" src="#pdf9" position="11 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
+        <a-image id="img10" src="#pdf10" position="13 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
 
         <!-- Cámara para AR -->
         <a-marker-camera preset="hiro"></a-marker-camera>
