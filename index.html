@@ -34,25 +34,27 @@
             z-index: 10000;
         }
 
+        /* Panel de control de los botones */
+        #buttonPanel {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: blue;
+            text-align: center;
+            padding: 15px 0;
+            z-index: 10000;
+        }
+
         /* Botones para navegar entre las imágenes */
         #prevButton, #nextButton {
-            position: fixed;
-            bottom: 80px;
             font-size: 18px;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: transparent;
             color: white;
             padding: 10px 20px;
-            border: none;
+            border: 2px solid white;
             cursor: pointer;
-            z-index: 9999;
-        }
-
-        #prevButton {
-            left: 20px;
-        }
-
-        #nextButton {
-            right: 20px;
+            margin: 0 20px;
+            text-transform: uppercase;
         }
 
         /* Imagen ampliada */
@@ -105,9 +107,11 @@
     <!-- Fondo oscuro cuando una imagen se amplía -->
     <div id="zoomBackground"></div>
 
-    <!-- Botones para navegar entre las imágenes -->
-    <button id="prevButton" onclick="prevImage()">Anterior</button>
-    <button id="nextButton" onclick="nextImage()">Siguiente</button>
+    <!-- Panel de control con los botones -->
+    <div id="buttonPanel">
+        <button id="prevButton" onclick="prevImage()">Anterior</button>
+        <button id="nextButton" onclick="nextImage()">Siguiente</button>
+    </div>
 
     <a-scene embedded arjs>
         <!-- Declarar las imágenes como activos -->
