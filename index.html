@@ -4,23 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <title>Visor AR con Imágenes Adaptables</title>
+    <title>Visor AR con Imágenes</title>
     <style>
-        /* Botón de control */
-        #zoomButton {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            z-index: 9999;
-        }
-
-        /* Pantalla de inicio con solo la primera imagen */
+        /* Estilo para la pantalla de inicio */
         #startScreen {
             position: fixed;
             top: 0;
@@ -34,6 +20,33 @@
             z-index: 9999;
         }
 
+        /* Botón para iniciar la visualización AR */
+        #startButton {
+            position: absolute;
+            bottom: 50px;
+            padding: 20px 40px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            z-index: 10000;
+        }
+
+        /* Botón de control para zoom */
+        #zoomButton {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 9999;
+        }
+
         /* Imagen ampliada */
         .zoomed {
             transition: scale 0.3s ease;
@@ -41,7 +54,7 @@
             z-index: 9999;
         }
 
-        /* Opacidad para indicar que las imágenes son interactivas */
+        /* Estilo para las imágenes interactivas */
         .zoomable {
             cursor: pointer;
             opacity: 0.7;
@@ -50,16 +63,32 @@
         .zoomable:hover {
             opacity: 1;
         }
+
+        /* Fondo oscuro para la imagen ampliada */
+        #zoomBackground {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            z-index: 9998;
+        }
     </style>
 </head>
 <body>
-    <!-- Pantalla de inicio con solo la primera imagen y un botón -->
+
+    <!-- Pantalla de inicio con la primera imagen -->
     <div id="startScreen">
         <a-image id="startImage" src="pdf_page0001-01.png" position="0 0 -3" scale="2 2 1" class="zoomable"></a-image>
         <button id="startButton" onclick="startAR()">Iniciar AR</button>
     </div>
 
-    <!-- Botón de control para ampliar/reducir -->
+    <!-- Fondo oscuro cuando una imagen se amplía -->
+    <div id="zoomBackground"></div>
+
+    <!-- Botón para controlar el zoom de la imagen -->
     <button id="zoomButton">Ampliar Imagen</button>
 
     <a-scene>
@@ -77,7 +106,6 @@
             <img id="pdf10" src="pdf_page0001-10.png">
         </a-assets>
 
-        <!-- Mostrar imágenes con tamaño adaptable -->
         <!-- Fila superior -->
         <a-image id="img1" src="#pdf1" position="-3 2 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
         <a-image id="img2" src="#pdf2" position="-1 2 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
@@ -96,24 +124,24 @@
 
         <!-- Cámara -->
         <a-entity camera position="0 1.6 0">
-            <!-- Control de mirada para dispositivos móviles -->
             <a-cursor></a-cursor>
         </a-entity>
     </a-scene>
 
     <script>
-        // Variable para almacenar la imagen ampliada
+        // Variables para manejar el estado de la imagen ampliada
         let zoomedImage = null;
 
-        // Función para iniciar la galería AR
+        // Función para iniciar la visualización AR
         function startAR() {
             document.getElementById("startScreen").style.display = "none"; // Ocultar la pantalla de inicio
             document.querySelector("a-scene").style.display = "block"; // Mostrar la escena AR
         }
 
-        // Función para manejar el zoom y la alternancia de imagen
+        // Función para manejar el zoom de la imagen
         function handleZoom(image) {
             var zoomButton = document.getElementById('zoomButton');
+            var zoomBackground = document.getElementById('zoomBackground');
 
             // Si no hay imagen ampliada, ampliamos la imagen seleccionada
             if (!zoomedImage) {
@@ -121,12 +149,14 @@
                 image.setAttribute('scale', '5 5 1'); // Ampliamos la imagen
                 image.setAttribute('position', '0 0 -3'); // La centramos
                 zoomButton.innerHTML = "Volver a su tamaño"; // Cambiar texto del botón
+                zoomBackground.style.display = "block"; // Mostrar fondo oscuro
             } else {
                 // Si ya hay una imagen ampliada, devolvemos a su tamaño original
                 if (zoomedImage === image) {
                     image.setAttribute('scale', '1.5 1.5 1'); // Escala original
                     image.setAttribute('position', image.getAttribute('position')); // Restaura la posición
                     zoomButton.innerHTML = "Ampliar Imagen"; // Cambiar texto del botón
+                    zoomBackground.style.display = "none"; // Ocultar fondo oscuro
                     zoomedImage = null;
                 }
             }
@@ -149,8 +179,10 @@
                 zoomedImage.setAttribute('position', zoomedImage.getAttribute('position'));
                 zoomButton.innerHTML = "Ampliar Imagen"; // Cambiar texto del botón
                 zoomedImage = null;
+                document.getElementById('zoomBackground').style.display = "none"; // Ocultar fondo oscuro
             }
         });
     </script>
+
 </body>
 </html>
