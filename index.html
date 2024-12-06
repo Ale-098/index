@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
-    <title>Visor AR con Imágenes Ajustables en Horizontal</title>
+    <title>Visor AR con Imágenes Controladas</title>
     <style>
         /* Pantalla de inicio con la primera imagen */
         #startScreen {
@@ -34,27 +34,25 @@
             z-index: 10000;
         }
 
-        /* Panel de control con los botones */
-        #buttonPanel {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: blue;
-            text-align: center;
-            padding: 10px 0;
-            z-index: 10000;
-        }
-
         /* Botones para navegar entre las imágenes */
         #prevButton, #nextButton {
+            position: fixed;
+            bottom: 80px;
             font-size: 18px;
-            background-color: transparent;
+            background-color: rgba(0, 0, 0, 0.7);
             color: white;
             padding: 10px 20px;
-            border: 2px solid white;
+            border: none;
             cursor: pointer;
-            margin: 0 10px;
-            text-transform: uppercase;
+            z-index: 9999;
+        }
+
+        #prevButton {
+            left: 20px;
+        }
+
+        #nextButton {
+            right: 20px;
         }
 
         /* Imagen ampliada */
@@ -107,11 +105,9 @@
     <!-- Fondo oscuro cuando una imagen se amplía -->
     <div id="zoomBackground"></div>
 
-    <!-- Panel de control con los botones -->
-    <div id="buttonPanel">
-        <button id="prevButton" onclick="prevImage()">Anterior</button>
-        <button id="nextButton" onclick="nextImage()">Siguiente</button>
-    </div>
+    <!-- Botones para navegar entre las imágenes -->
+    <button id="prevButton" onclick="prevImage()">Anterior</button>
+    <button id="nextButton" onclick="nextImage()">Siguiente</button>
 
     <a-scene embedded arjs>
         <!-- Declarar las imágenes como activos -->
@@ -128,17 +124,8 @@
             <img id="pdf10" src="pdf_page0001-10.png">
         </a-assets>
 
-        <!-- Colocar las imágenes en una línea horizontal ajustable -->
-        <a-image id="img1" src="#pdf1" position="-5 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img2" src="#pdf2" position="-3 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img3" src="#pdf3" position="-1 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img4" src="#pdf4" position="1 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img5" src="#pdf5" position="3 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img6" src="#pdf6" position="5 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img7" src="#pdf7" position="7 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img8" src="#pdf8" position="9 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img9" src="#pdf9" position="11 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
-        <a-image id="img10" src="#pdf10" position="13 0 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
+        <!-- Imagen inicial -->
+        <a-image id="currentImage" src="#pdf1" position="0 0 -3" scale="3 3 1" class="zoomable"></a-image>
 
         <!-- Cámara para AR -->
         <a-marker-camera preset="hiro"></a-marker-camera>
