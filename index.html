@@ -6,13 +6,40 @@
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <title>Visor AR con Imágenes Adaptables</title>
     <style>
-        /* Para manejar el zoom completo de la imagen */
+        /* Estilo para la imagen ampliada y la indicación de clic */
         .zoomed {
             transition: scale 0.3s ease; /* Suaviza la transición al hacer zoom */
+            position: absolute; /* Para que la imagen se mueva al frente */
+            z-index: 9999; /* Asegura que la imagen esté sobre todas las demás */
+        }
+
+        .zoomable {
+            cursor: pointer; /* Indicación visual para el usuario */
+            opacity: 0.7;
+        }
+
+        .zoomable:hover {
+            opacity: 1; /* Muestra que es interactivo cuando pasa el cursor */
+        }
+
+        /* Indicaciones visuales del texto */
+        #zoomText {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            z-index: 10000;
+            display: none; /* Oculto por defecto */
         }
     </style>
 </head>
 <body>
+    <!-- Texto de indicación para ampliar la imagen -->
+    <div id="zoomText">Haz clic en una imagen para ampliarla</div>
+
     <a-scene>
         <!-- Declarar las imágenes como activos -->
         <a-assets>
@@ -55,6 +82,17 @@
     <script>
         // Función para manejar el zoom
         function handleZoom(image) {
+            var zoomText = document.getElementById('zoomText');
+            var scene = document.querySelector('a-scene');
+
+            // Mostrar el texto de indicación solo la primera vez
+            if (!zoomText.style.display || zoomText.style.display === 'none') {
+                zoomText.style.display = 'block';
+                setTimeout(() => {
+                    zoomText.style.display = 'none';
+                }, 3000); // El texto desaparece después de 3 segundos
+            }
+
             // Si ya está "zoomed", lo devuelve a su tamaño normal
             if (image.classList.contains("zoomed")) {
                 image.setAttribute('scale', '1.5 1.5 1'); // Escala original
@@ -63,6 +101,9 @@
                 // Cambiar la escala para llenar la pantalla
                 image.setAttribute('scale', '5 5 1'); // Cambiar la escala de la imagen
                 image.classList.add("zoomed");
+                
+                // Asegurarse de que la imagen se lleve al frente
+                image.setAttribute('position', '0 0 -3'); // Cambiar posición para hacerla centrada y grande
             }
         }
 
