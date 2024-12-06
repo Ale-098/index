@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <title>Visor AR de Imágenes</title>
+    <title>Visor AR con Imágenes Adaptables</title>
 </head>
 <body>
     <a-scene>
@@ -22,21 +22,28 @@
             <img id="pdf10" src="pdf_page0001-10.png">
         </a-assets>
 
-        <!-- Mostrar imágenes en el espacio 3D -->
-        <a-image src="#pdf1" position="-4 2 -5" scale="2 2 1"></a-image>
-        <a-image src="#pdf2" position="-2 2 -5" scale="2 2 1"></a-image>
-        <a-image src="#pdf3" position="0 2 -5" scale="2 2 1"></a-image>
-        <a-image src="#pdf4" position="2 2 -5" scale="2 2 1"></a-image>
-        <a-image src="#pdf5" position="4 2 -5" scale="2 2 1"></a-image>
+        <!-- Mostrar imágenes con tamaño adaptable -->
+        <!-- Fila superior -->
+        <a-image src="#pdf1" position="-3 2 -5" scale="1.5 1.5 1"></a-image>
+        <a-image src="#pdf2" position="-1 2 -5" scale="1.5 1.5 1"></a-image>
+        <a-image src="#pdf3" position="1 2 -5" scale="1.5 1.5 1"></a-image>
+        <a-image src="#pdf4" position="3 2 -5" scale="1.5 1.5 1"></a-image>
 
-        <a-image src="#pdf6" position="-4 0 -5" scale="2 2 1"></a-image>
-        <a-image src="#pdf7" position="-2 0 -5" scale="2 2 1"></a-image>
-        <a-image src="#pdf8" position="0 0 -5" scale="2 2 1"></a-image>
-        <a-image src="#pdf9" position="2 0 -5" scale="2 2 1"></a-image>
-        <a-image src="#pdf10" position="4 0 -5" scale="2 2 1"></a-image>
+        <!-- Fila inferior -->
+        <a-image src="#pdf5" position="-3 0 -5" scale="1.5 1.5 1"></a-image>
+        <a-image src="#pdf6" position="-1 0 -5" scale="1.5 1.5 1"></a-image>
+        <a-image src="#pdf7" position="1 0 -5" scale="1.5 1.5 1"></a-image>
+        <a-image src="#pdf8" position="3 0 -5" scale="1.5 1.5 1"></a-image>
+
+        <!-- Últimas imágenes -->
+        <a-image src="#pdf9" position="-2 -2 -5" scale="1.5 1.5 1"></a-image>
+        <a-image src="#pdf10" position="2 -2 -5" scale="1.5 1.5 1"></a-image>
 
         <!-- Cámara -->
-        <a-entity camera position="0 1.6 0"></a-entity>
+        <a-entity camera position="0 1.6 0">
+            <!-- Control de mirada para dispositivos móviles -->
+            <a-cursor></a-cursor>
+        </a-entity>
     </a-scene>
 </body>
 </html>
