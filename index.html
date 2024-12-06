@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
     <title>Visor AR con Imágenes</title>
     <style>
         /* Estilo para la pantalla de inicio */
@@ -91,7 +92,7 @@
     <!-- Botón para controlar el zoom de la imagen -->
     <button id="zoomButton">Ampliar Imagen</button>
 
-    <a-scene>
+    <a-scene embedded arjs>
         <!-- Declarar las imágenes como activos -->
         <a-assets>
             <img id="pdf1" src="pdf_page0001-01.png">
@@ -122,14 +123,12 @@
         <a-image id="img9" src="#pdf9" position="-2 -2 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
         <a-image id="img10" src="#pdf10" position="2 -2 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
 
-        <!-- Cámara -->
-        <a-entity camera position="0 1.6 0">
-            <a-cursor></a-cursor>
-        </a-entity>
+        <!-- Cámara para AR -->
+        <a-marker-camera preset="hiro"></a-marker-camera>
     </a-scene>
 
     <script>
-        // Variables para manejar el estado de la imagen ampliada
+        // Variable para almacenar la imagen ampliada
         let zoomedImage = null;
 
         // Función para iniciar la visualización AR
