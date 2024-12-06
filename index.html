@@ -6,39 +6,41 @@
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <title>Visor AR con Imágenes Adaptables</title>
     <style>
-        /* Estilo para la imagen ampliada y la indicación de clic */
-        .zoomed {
-            transition: scale 0.3s ease; /* Suaviza la transición al hacer zoom */
-            position: absolute; /* Para que la imagen se mueva al frente */
-            z-index: 9999; /* Asegura que la imagen esté sobre todas las demás */
+        /* Botón de control */
+        #zoomButton {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 9999;
         }
 
+        /* Imagen ampliada */
+        .zoomed {
+            transition: scale 0.3s ease;
+            position: absolute; /* Para mover la imagen al frente */
+            z-index: 9999;
+        }
+
+        /* Opacidad para indicar que las imágenes son interactivas */
         .zoomable {
-            cursor: pointer; /* Indicación visual para el usuario */
+            cursor: pointer;
             opacity: 0.7;
         }
 
         .zoomable:hover {
-            opacity: 1; /* Muestra que es interactivo cuando pasa el cursor */
-        }
-
-        /* Indicaciones visuales del texto */
-        #zoomText {
-            position: fixed;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            z-index: 10000;
-            display: none; /* Oculto por defecto */
+            opacity: 1;
         }
     </style>
 </head>
 <body>
-    <!-- Texto de indicación para ampliar la imagen -->
-    <div id="zoomText">Haz clic en una imagen para ampliarla</div>
+    <!-- Botón de control para ampliar/reducir -->
+    <button id="zoomButton">Ampliar Imagen</button>
 
     <a-scene>
         <!-- Declarar las imágenes como activos -->
@@ -55,7 +57,7 @@
             <img id="pdf10" src="pdf_page0001-10.png">
         </a-assets>
 
-        <!-- Mostrar imágenes con tamaño adaptable y la opción de hacer clic para zoom -->
+        <!-- Mostrar imágenes con tamaño adaptable -->
         <!-- Fila superior -->
         <a-image id="img1" src="#pdf1" position="-3 2 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
         <a-image id="img2" src="#pdf2" position="-1 2 -5" scale="1.5 1.5 1" class="zoomable"></a-image>
@@ -80,30 +82,27 @@
     </a-scene>
 
     <script>
-        // Función para manejar el zoom
+        // Variable para almacenar la imagen ampliada
+        let zoomedImage = null;
+
+        // Función para manejar el zoom y la alternancia de imagen
         function handleZoom(image) {
-            var zoomText = document.getElementById('zoomText');
-            var scene = document.querySelector('a-scene');
+            var zoomButton = document.getElementById('zoomButton');
 
-            // Mostrar el texto de indicación solo la primera vez
-            if (!zoomText.style.display || zoomText.style.display === 'none') {
-                zoomText.style.display = 'block';
-                setTimeout(() => {
-                    zoomText.style.display = 'none';
-                }, 3000); // El texto desaparece después de 3 segundos
-            }
-
-            // Si ya está "zoomed", lo devuelve a su tamaño normal
-            if (image.classList.contains("zoomed")) {
-                image.setAttribute('scale', '1.5 1.5 1'); // Escala original
-                image.classList.remove("zoomed");
+            // Si no hay imagen ampliada, ampliamos la imagen seleccionada
+            if (!zoomedImage) {
+                zoomedImage = image;
+                image.setAttribute('scale', '5 5 1'); // Ampliamos la imagen
+                image.setAttribute('position', '0 0 -3'); // La centramos
+                zoomButton.innerHTML = "Volver a su tamaño"; // Cambiar texto del botón
             } else {
-                // Cambiar la escala para llenar la pantalla
-                image.setAttribute('scale', '5 5 1'); // Cambiar la escala de la imagen
-                image.classList.add("zoomed");
-                
-                // Asegurarse de que la imagen se lleve al frente
-                image.setAttribute('position', '0 0 -3'); // Cambiar posición para hacerla centrada y grande
+                // Si ya hay una imagen ampliada, devolvemos a su tamaño original
+                if (zoomedImage === image) {
+                    image.setAttribute('scale', '1.5 1.5 1'); // Escala original
+                    image.setAttribute('position', image.getAttribute('position')); // Restaura la posición
+                    zoomButton.innerHTML = "Ampliar Imagen"; // Cambiar texto del botón
+                    zoomedImage = null;
+                }
             }
         }
 
@@ -113,6 +112,18 @@
             image.addEventListener('click', function() {
                 handleZoom(image); // Ejecuta el zoom en la imagen al hacer clic
             });
+        });
+
+        // Añadir evento al botón de zoom para alternar ampliación/reducción
+        var zoomButton = document.getElementById('zoomButton');
+        zoomButton.addEventListener('click', function() {
+            if (zoomedImage) {
+                // Si hay una imagen ampliada, la reduce
+                zoomedImage.setAttribute('scale', '1.5 1.5 1');
+                zoomedImage.setAttribute('position', zoomedImage.getAttribute('position'));
+                zoomButton.innerHTML = "Ampliar Imagen"; // Cambiar texto del botón
+                zoomedImage = null;
+            }
         });
     </script>
 </body>
