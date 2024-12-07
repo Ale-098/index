@@ -5,42 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
-    <title>Visor AR con Imágenes Controladas</title>
+    <title>Visor AR con Botones Mejorados</title>
     <style>
-        /* Botones para navegar entre las imágenes */
+        /* Estilo para los botones */
         #prevButton, #nextButton {
             position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 50px;
-            height: 50px;
-            background-color: rgba(0, 0, 0, 0.7);
+            bottom: 50%;
+            width: 80px;
+            height: 80px;
+            background-color: rgba(0, 0, 0, 0.8);
             color: white;
             border: none;
             cursor: pointer;
+            font-size: 20px;
+            border-radius: 50%; /* Botones redondeados */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translateY(50%);
             z-index: 9999;
         }
 
         #prevButton {
             left: 10px;
-            clip-path: polygon(100% 0, 0 50%, 100% 100%); /* Triángulo apuntando a la izquierda */
         }
 
         #nextButton {
             right: 10px;
-            clip-path: polygon(0 0, 100% 50%, 0 100%); /* Triángulo apuntando a la derecha */
         }
 
-        /* Estilo adicional para que se vean bien en dispositivos móviles */
-        @media (max-width: 768px) {
-            #prevButton, #nextButton {
-                width: 40px;
-                height: 40px;
-            }
+        /* Área ampliada para facilitar el clic */
+        #prevButton:hover, #nextButton:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: black;
+        }
+
+        /* Triángulos como iconos de flechas */
+        #prevButton::before, #nextButton::before {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        #prevButton::before {
+            border-width: 15px 20px 15px 0;
+            border-color: transparent white transparent transparent;
+        }
+
+        #nextButton::before {
+            border-width: 15px 0 15px 20px;
+            border-color: transparent transparent transparent white;
         }
     </style>
 </head>
 <body>
+
     <!-- Botones para navegar entre las imágenes -->
     <button id="prevButton" onclick="prevImage()"></button>
     <button id="nextButton" onclick="nextImage()"></button>
@@ -51,31 +72,22 @@
             <img id="pdf1" src="pdf_page0001-01.png">
             <img id="pdf2" src="pdf_page0001-02.png">
             <img id="pdf3" src="pdf_page0001-03.png">
-            <img id="pdf4" src="pdf_page0001-04.png">
-            <img id="pdf5" src="pdf_page0001-05.png">
-            <img id="pdf6" src="pdf_page0001-06.png">
-            <img id="pdf7" src="pdf_page0001-07.png">
-            <img id="pdf8" src="pdf_page0001-08.png">
-            <img id="pdf9" src="pdf_page0001-09.png">
-            <img id="pdf10" src="pdf_page0001-10.png">
         </a-assets>
 
         <!-- Imagen inicial -->
-        <a-image id="currentImage" src="#pdf1" position="0 0 -3" scale="3 3 1"></a-image>
+        <a-image id="currentImage" src="#pdf1" position="0 0 -4.5" scale="3 3 1"></a-image>
 
         <!-- Cámara para AR -->
         <a-marker-camera preset="hiro"></a-marker-camera>
     </a-scene>
 
     <script>
-        // Variable para llevar el control de la imagen actual
+        // Variables para controlar la imagen actual
         let currentImageIndex = 1;
-        const totalImages = 10;
+        const totalImages = 3;
 
-        // Array con las IDs de las imágenes
         const images = [
-            '#pdf1', '#pdf2', '#pdf3', '#pdf4', '#pdf5', 
-            '#pdf6', '#pdf7', '#pdf8', '#pdf9', '#pdf10'
+            '#pdf1', '#pdf2', '#pdf3'
         ];
 
         // Función para navegar a la imagen anterior
@@ -102,12 +114,9 @@
         function updateImage() {
             const currentImage = document.getElementById('currentImage');
             currentImage.setAttribute('src', images[currentImageIndex - 1]);
+            currentImage.setAttribute('position', '0 0 -4.5'); // Posición más alejada
         }
-
-        // Ocultar la pantalla de inicio automáticamente y mostrar AR
-        window.onload = () => {
-            document.getElementById("startScreen")?.remove(); // Elimina la pantalla de inicio si existe
-        };
     </script>
+
 </body>
 </html>
