@@ -10,19 +10,18 @@
         /* Estilo para los botones */
         #prevButton, #nextButton {
             position: fixed;
-            bottom: 50%;
-            width: 80px;
-            height: 80px;
+            bottom: 20%;
+            width: 60px;
+            height: 60px;
             background-color: rgba(0, 0, 0, 0.8);
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 20px;
-            border-radius: 50%; /* Botones redondeados */
+            font-size: 18px;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            transform: translateY(50%);
             z-index: 9999;
         }
 
@@ -34,13 +33,12 @@
             right: 10px;
         }
 
-        /* Área ampliada para facilitar el clic */
         #prevButton:hover, #nextButton:hover {
             background-color: rgba(255, 255, 255, 0.8);
             color: black;
         }
 
-        /* Triángulos como iconos de flechas */
+        /* Iconos de flecha en botones */
         #prevButton::before, #nextButton::before {
             content: '';
             display: block;
@@ -50,12 +48,12 @@
         }
 
         #prevButton::before {
-            border-width: 15px 20px 15px 0;
+            border-width: 10px 15px 10px 0;
             border-color: transparent white transparent transparent;
         }
 
         #nextButton::before {
-            border-width: 15px 0 15px 20px;
+            border-width: 10px 0 10px 15px;
             border-color: transparent transparent transparent white;
         }
     </style>
@@ -75,7 +73,7 @@
         </a-assets>
 
         <!-- Imagen inicial -->
-        <a-image id="currentImage" src="#pdf1" position="0 0 -4.5" scale="3 3 1"></a-image>
+        <a-image id="currentImage" src="#pdf1" position="0 0 -3" scale="3 3 1"></a-image>
 
         <!-- Cámara para AR -->
         <a-marker-camera preset="hiro"></a-marker-camera>
@@ -114,7 +112,6 @@
         function updateImage() {
             const currentImage = document.getElementById('currentImage');
             currentImage.setAttribute('src', images[currentImageIndex - 1]);
-            currentImage.setAttribute('position', '0 0 -4.5'); // Posición más alejada
         }
     </script>
 
