@@ -1,67 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
-    <title>Visor AR Mejorado</title>
+    <title>Visor AR con Imágenes Controladas</title>
     <style>
-        /* Estilo para los botones */
-        #prevButton, #nextButton {
+        /* Pantalla de inicio con la primera imagen */
+        #startScreen {
             position: fixed;
-            bottom: 15%;
-            width: 80px;
-            height: 80px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            border-radius: 50%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
         }
 
+        /* Botón para iniciar la visualización AR */
+        #startButton {
+            position: absolute;
+            bottom: 50px;
+            padding: 20px 40px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            z-index: 10000;
+        }
+
+        /* Botones para navegar entre las imágenes */
+        #prevButton, #nextButton {
+            position: fixed;
+            bottom: 20%;
+            font-size: 24px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            cursor: pointer;
+            z-index: 9999;
+            border-radius: 50%;
+        }
+
         #prevButton {
-            left: 5%;
+            left: 10%;
         }
 
         #nextButton {
-            right: 5%;
+            right: 10%;
         }
 
-        #prevButton:hover, #nextButton:hover {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: black;
+        /* Estilo para las imágenes interactivas */
+        .zoomable {
+            cursor: pointer;
+            opacity: 0.7;
         }
 
-        #prevButton::before, #nextButton::before {
-            content: '';
-            display: block;
-            width: 0;
-            height: 0;
-            border-style: solid;
+        .zoomable:hover {
+            opacity: 1;
         }
 
-        #prevButton::before {
-            border-width: 15px 20px 15px 0;
-            border-color: transparent white transparent transparent;
+        /* Fondo oscuro para la imagen ampliada */
+        #zoomBackground {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            z-index: 9998;
         }
 
-        #nextButton::before {
-            border-width: 15px 0 15px 20px;
-            border-color: transparent transparent transparent white;
+        /* Ajuste de imagen */
+        a-image {
+            transition: transform 0.3s ease;
         }
+
     </style>
 </head>
 <body>
 
+    <!-- Pantalla de inicio con la primera imagen -->
+    <div id="startScreen">
+        <a-image id="startImage" src="pdf_page0001-01.png" position="0 0 -4" scale="3 3 1" class="zoomable"></a-image>
+        <button id="startButton" onclick="startAR()">Iniciar AR</button>
+    </div>
+
+    <!-- Fondo oscuro cuando una imagen se amplía -->
+    <div id="zoomBackground"></div>
+
     <!-- Botones para navegar entre las imágenes -->
-    <button id="prevButton" onclick="prevImage()"></button>
-    <button id="nextButton" onclick="nextImage()"></button>
+    <button id="prevButton" onclick="prevImage()">Anterior</button>
+    <button id="nextButton" onclick="nextImage()">Siguiente</button>
 
     <a-scene embedded arjs>
         <!-- Declarar las imágenes como activos -->
@@ -69,23 +106,38 @@
             <img id="pdf1" src="pdf_page0001-01.png">
             <img id="pdf2" src="pdf_page0001-02.png">
             <img id="pdf3" src="pdf_page0001-03.png">
+            <img id="pdf4" src="pdf_page0001-04.png">
+            <img id="pdf5" src="pdf_page0001-05.png">
+            <img id="pdf6" src="pdf_page0001-06.png">
+            <img id="pdf7" src="pdf_page0001-07.png">
+            <img id="pdf8" src="pdf_page0001-08.png">
+            <img id="pdf9" src="pdf_page0001-09.png">
+            <img id="pdf10" src="pdf_page0001-10.png">
         </a-assets>
 
         <!-- Imagen inicial -->
-        <a-image id="currentImage" src="#pdf1" position="0 0 -6" scale="5 5 1"></a-image>
+        <a-image id="currentImage" src="#pdf1" position="0 0 -6" scale="5 5 1" class="zoomable"></a-image>
 
         <!-- Cámara para AR -->
         <a-marker-camera preset="hiro"></a-marker-camera>
     </a-scene>
 
     <script>
-        // Variables para controlar la imagen actual
+        // Variable para llevar el control de la imagen actual
         let currentImageIndex = 1;
-        const totalImages = 3;
+        const totalImages = 10;
 
+        // Array con las IDs de las imágenes
         const images = [
-            '#pdf1', '#pdf2', '#pdf3'
+            '#pdf1', '#pdf2', '#pdf3', '#pdf4', '#pdf5', 
+            '#pdf6', '#pdf7', '#pdf8', '#pdf9', '#pdf10'
         ];
+
+        // Función para iniciar la visualización AR
+        function startAR() {
+            document.getElementById("startScreen").style.display = "none"; // Ocultar la pantalla de inicio
+            document.querySelector("a-scene").style.display = "block"; // Mostrar la escena AR
+        }
 
         // Función para navegar a la imagen anterior
         function prevImage() {
@@ -111,7 +163,38 @@
         function updateImage() {
             const currentImage = document.getElementById('currentImage');
             currentImage.setAttribute('src', images[currentImageIndex - 1]);
+            currentImage.setAttribute('position', '0 0 -6'); // Ajuste de la distancia de la imagen
         }
+
+        // Función para manejar el zoom de la imagen
+        function handleZoom(image) {
+            var zoomButton = document.getElementById('zoomButton');
+            var zoomBackground = document.getElementById('zoomBackground');
+
+            // Si no hay imagen ampliada, ampliamos la imagen seleccionada
+            if (!zoomedImage) {
+                zoomedImage = image;
+                image.classList.add("zoomed"); // Añadimos la clase para la imagen ampliada
+                zoomButton.innerHTML = "Volver a su tamaño"; // Cambiar texto del botón
+                zoomBackground.style.display = "block"; // Mostrar fondo oscuro
+            } else {
+                // Si ya hay una imagen ampliada, devolvemos a su tamaño original
+                if (zoomedImage === image) {
+                    image.classList.remove("zoomed"); // Eliminamos la clase de imagen ampliada
+                    zoomButton.innerHTML = "Ampliar Imagen"; // Cambiar texto del botón
+                    zoomBackground.style.display = "none"; // Ocultar fondo oscuro
+                    zoomedImage = null;
+                }
+            }
+        }
+
+        // Añadir evento de clic a cada imagen con la clase "zoomable"
+        var zoomableImages = document.querySelectorAll('.zoomable');
+        zoomableImages.forEach(function(image) {
+            image.addEventListener('click', function() {
+                handleZoom(image); // Ejecuta el zoom en la imagen al hacer clic
+            });
+        });
     </script>
 
 </body>
