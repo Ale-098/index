@@ -5,22 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
-    <title>Visor AR con Imágenes Controladas</title>
+    <title>Visor AR con Imágenes</title>
     <style>
-        /* Asegurar que la escena ocupa toda la pantalla */
+        /* Asegurar que la escena ocupe toda la pantalla */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             width: 100%;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: black;
-            overflow: hidden;
         }
 
-        /* Estilo para los botones de navegación (triángulos centrados en los laterales) */
+        /* Estilo de los botones triangulares */
         #prevButton, #nextButton {
             position: fixed;
             top: 50%;
@@ -34,60 +34,34 @@
             height: 60px;
         }
 
-        /* Estilo del botón anterior (triángulo hacia la izquierda) */
         #prevButton {
             left: 10px;
             clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
             background-color: rgba(0, 0, 0, 0.7);
         }
 
-        /* Estilo del botón siguiente (triángulo hacia la derecha) */
         #nextButton {
             right: 10px;
             clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
             background-color: rgba(0, 0, 0, 0.7);
         }
 
-        /* Mensaje que indica girar el dispositivo a horizontal */
-        #orientationMessage {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            color: white;
-            text-align: center;
-            z-index: 10000;
-        }
-
-        /* Evitar que las imágenes se deformen */
+        /* Estilo de la imagen en la AR */
         a-image {
-            width: 100vw; /* Ajusta el ancho a la pantalla */
-            height: 100vh; /* Ajusta el alto a la pantalla */
-            object-fit: contain; /* Mantiene la imagen proporcional */
+            width: 100vw; 
+            height: 100vh;
+            object-fit: contain;
             position: absolute;
-            z-index: 1;
-        }
-
-        /* Evitar que los botones se muevan cuando se rota el teléfono */
-        .a-scene {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
         }
     </style>
 </head>
 <body>
 
-    <!-- Mensaje que le indica al usuario que gire el teléfono -->
-    <div id="orientationMessage">Por favor, gire su teléfono a horizontal.</div>
-
     <!-- Botones para navegar entre las imágenes -->
     <button id="prevButton" onclick="prevImage()"></button>
     <button id="nextButton" onclick="nextImage()"></button>
 
+    <!-- Escena AR -->
     <a-scene embedded arjs>
         <!-- Declarar las imágenes como activos -->
         <a-assets>
@@ -106,27 +80,20 @@
         <!-- Imagen inicial -->
         <a-image id="currentImage" src="#pdf1" position="0 0 -3" scale="1 1 1" rotation="0 0 0"></a-image>
 
-        <!-- Cámara para AR -->
+        <!-- Cámara AR -->
         <a-marker-camera preset="hiro"></a-marker-camera>
     </a-scene>
 
     <script>
-        // Variable para llevar el control de la imagen actual
+        // Control de la imagen actual
         let currentImageIndex = 1;
         const totalImages = 10;
-
-        // Array con las IDs de las imágenes
         const images = [
-            '#pdf1', '#pdf2', '#pdf3', '#pdf4', '#pdf5', 
+            '#pdf1', '#pdf2', '#pdf3', '#pdf4', '#pdf5',
             '#pdf6', '#pdf7', '#pdf8', '#pdf9', '#pdf10'
         ];
 
-        // Función para iniciar la visualización AR automáticamente
-        window.onload = function() {
-            document.querySelector("a-scene").style.display = "block"; // Mostrar la escena AR
-        };
-
-        // Función para navegar a la imagen anterior
+        // Navegar a la imagen anterior
         function prevImage() {
             if (currentImageIndex > 1) {
                 currentImageIndex--;
@@ -136,7 +103,7 @@
             updateImage();
         }
 
-        // Función para navegar a la imagen siguiente
+        // Navegar a la imagen siguiente
         function nextImage() {
             if (currentImageIndex < totalImages) {
                 currentImageIndex++;
@@ -146,20 +113,11 @@
             updateImage();
         }
 
-        // Función para actualizar la imagen visible
+        // Actualizar la imagen mostrada
         function updateImage() {
             const currentImage = document.getElementById('currentImage');
             currentImage.setAttribute('src', images[currentImageIndex - 1]);
-            currentImage.setAttribute('position', '0 0 -3'); // Reestablecer la posición de la imagen
-            currentImage.setAttribute('rotation', '0 0 0'); // Asegurar que la rotación sea 0 para estar ortogonal
         }
-
-        // Función para detectar cuando el teléfono se gira y ocultar el mensaje
-        window.addEventListener("orientationchange", function() {
-            if (window.orientation === 90 || window.orientation === -90) {
-                document.getElementById("orientationMessage").style.display = "none";
-            }
-        });
     </script>
 
 </body>
