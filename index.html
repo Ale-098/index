@@ -17,7 +17,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: black;
+            background-color: transparent; /* Fondo transparente */
         }
 
         /* Estilo de los botones triangulares */
@@ -50,8 +50,8 @@
 
         /* Estilo de la imagen en la AR */
         a-image {
-            width: 90vw; /* Ajusté el ancho para acercar la imagen un poco */
-            height: 90vh; /* Ajusté la altura para acercar la imagen un poco */
+            width: 85vw; /* Acercar más la imagen */
+            height: 85vh; /* Acercar más la imagen */
             object-fit: contain; /* Mantiene la proporción sin deformar */
             position: absolute;
         }
@@ -80,7 +80,7 @@
         </a-assets>
 
         <!-- Imagen inicial -->
-        <a-image id="currentImage" src="#pdf1" position="0 0 -2.5" scale="1 1 1" rotation="0 0 0"></a-image>
+        <a-image id="currentImage" src="#pdf1" position="0 0 -2" scale="1 1 1" rotation="0 0 0"></a-image>
 
         <!-- Cámara AR -->
         <a-marker-camera preset="hiro"></a-marker-camera>
