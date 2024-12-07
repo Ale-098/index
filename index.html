@@ -7,6 +7,19 @@
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
     <title>Visor AR con Imágenes Controladas</title>
     <style>
+        /* Asegurar que la escena ocupa toda la pantalla */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            overflow: hidden;
+        }
+
         /* Estilo para los botones de navegación (triángulos centrados en los laterales) */
         #prevButton, #nextButton {
             position: fixed;
@@ -35,30 +48,41 @@
             background-color: rgba(0, 0, 0, 0.7);
         }
 
-        /* Ajustar el tamaño de las imágenes para que se adapten al teléfono */
-        a-image {
-            width: 100vw;  /* Ajusta el ancho a la pantalla */
-            height: auto;  /* Mantiene la proporción de la imagen */
-            object-fit: contain; /* Ajusta la imagen sin distorsionarla */
+        /* Mensaje que indica girar el dispositivo a horizontal */
+        #orientationMessage {
             position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: white;
+            text-align: center;
+            z-index: 10000;
+        }
+
+        /* Evitar que las imágenes se deformen */
+        a-image {
+            width: 100vw; /* Ajusta el ancho a la pantalla */
+            height: 100vh; /* Ajusta el alto a la pantalla */
+            object-fit: contain; /* Mantiene la imagen proporcional */
+            position: absolute;
+            z-index: 1;
         }
 
         /* Evitar que los botones se muevan cuando se rota el teléfono */
-        body, html {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            height: 100%;
+        .a-scene {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            height: 100%;
         }
-
     </style>
 </head>
 <body>
+
+    <!-- Mensaje que le indica al usuario que gire el teléfono -->
+    <div id="orientationMessage">Por favor, gire su teléfono a horizontal.</div>
 
     <!-- Botones para navegar entre las imágenes -->
     <button id="prevButton" onclick="prevImage()"></button>
@@ -129,6 +153,13 @@
             currentImage.setAttribute('position', '0 0 -3'); // Reestablecer la posición de la imagen
             currentImage.setAttribute('rotation', '0 0 0'); // Asegurar que la rotación sea 0 para estar ortogonal
         }
+
+        // Función para detectar cuando el teléfono se gira y ocultar el mensaje
+        window.addEventListener("orientationchange", function() {
+            if (window.orientation === 90 || window.orientation === -90) {
+                document.getElementById("orientationMessage").style.display = "none";
+            }
+        });
     </script>
 
 </body>
