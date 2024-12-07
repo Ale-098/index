@@ -32,25 +32,27 @@
             z-index: 9999;
             width: 60px;
             height: 60px;
+            border-radius: 50%;
+            border: 2px solid white; /* Borde blanco */
         }
 
         #prevButton {
             left: 10px;
             clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(255, 255, 255, 0.7); /* Botón blanco con opacidad */
         }
 
         #nextButton {
             right: 10px;
             clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(255, 255, 255, 0.7); /* Botón blanco con opacidad */
         }
 
         /* Estilo de la imagen en la AR */
         a-image {
-            width: 100vw; 
-            height: 100vh;
-            object-fit: contain;
+            width: 90vw; /* Ajusté el ancho para acercar la imagen un poco */
+            height: 90vh; /* Ajusté la altura para acercar la imagen un poco */
+            object-fit: contain; /* Mantiene la proporción sin deformar */
             position: absolute;
         }
     </style>
@@ -78,7 +80,7 @@
         </a-assets>
 
         <!-- Imagen inicial -->
-        <a-image id="currentImage" src="#pdf1" position="0 0 -3" scale="1 1 1" rotation="0 0 0"></a-image>
+        <a-image id="currentImage" src="#pdf1" position="0 0 -2.5" scale="1 1 1" rotation="0 0 0"></a-image>
 
         <!-- Cámara AR -->
         <a-marker-camera preset="hiro"></a-marker-camera>
